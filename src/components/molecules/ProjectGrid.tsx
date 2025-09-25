@@ -36,7 +36,7 @@ const ProjectGrid: React.FC<ProjectGridProps> = ({
       initial="hidden"
       animate="show"
     >
-      {projects.map((project, index) => (
+      {projects.map((project) => (
         <motion.div key={project.id} variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0 } }}>
           <ProjectCard project={project} />
         </motion.div>

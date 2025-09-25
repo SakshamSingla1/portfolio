@@ -24,16 +24,6 @@ interface EducationProps {
     educations: IEducation[];
 }
 
-const container = {
-    hidden: { opacity: 0 },
-    show: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.2
-        }
-    }
-};
-
 const Education: React.FC<EducationProps> = ({ educations = [] }) => {
     const classes = useStyles();
     if (!educations.length) {

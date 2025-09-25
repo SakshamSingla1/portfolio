@@ -3,7 +3,6 @@ import { Spotlight } from "../atoms/Spotlight";
 import { motion } from "framer-motion";
 import { FaPaperPlane } from "react-icons/fa";
 import ContactForm from "../atoms/ContactForm";
-import { type ContactUsRequest } from "../../services/useContactUsService";
 import { createUseStyles } from "react-jss";
 import { COLORS } from "../../utils/constant";
 
@@ -28,14 +27,6 @@ interface ContactUsProps {
 const ContactUs: React.FC<ContactUsProps> = ({ profileId }) => {
     const classes = useStyles();
   const [submitStatus, setSubmitStatus] = useState<{ success: boolean; message: string } | null>(null);
-
-  const initialFormData: ContactUsRequest = {
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-    profileId: profileId
-  };
 
   return (
     <section

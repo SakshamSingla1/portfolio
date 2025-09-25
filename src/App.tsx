@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useProfileMasterService, type IProfileMaster } from "./services/useProfileMasterService";
-import { FaBook, FaCode, FaDumbbell, FaEnvelope, FaHome, FaUser } from "react-icons/fa";
+import { FaBook, FaCode, FaDumbbell, FaEnvelope, FaHome } from "react-icons/fa";
 import { FaUpwork } from "react-icons/fa6";
 import { FloatingNav } from "./components/atoms/FloatingNavbar";
 import Home from "./components/pages/Home";
@@ -33,7 +33,6 @@ const sections = [
 const App = () => {
   const profileMasterService = useProfileMasterService();
   const [profileMaster, setProfileMaster] = useState<IProfileMaster | null>(null);
-  const [activeSection, setActiveSection] = useState('home');
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
   const containerRef = useRef<HTMLDivElement>(null);
   
@@ -84,7 +83,6 @@ const App = () => {
         navItems={sections.map(section => ({
           ...section,
           link: `#${section.id}`,
-          active: activeSection === section.id
         }))}
         onNavItemClick={(id) => scrollToSection(id.replace('#', ''))}
       />

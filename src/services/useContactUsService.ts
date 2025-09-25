@@ -1,6 +1,5 @@
 import { API_METHOD } from "../utils/constant";
 import { request } from ".";
-import { replaceUrlParams } from "../utils/helper";
 
 export const CONTACT_US_URLS = {
     CREATE: "/contact-us",

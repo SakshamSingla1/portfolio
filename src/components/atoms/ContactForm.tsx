@@ -2,9 +2,7 @@ import React from 'react';
 import { useContactUsService, type ContactUsRequest } from '../../services/useContactUsService';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { COLORS } from '../../utils/constant';
-import TextField from '../atoms/TextField';
-import Button from '../atoms/Button';
+import { COLORS } from '../../utils/constant'
 
 interface ContactFormProps {
   profileId: string;
