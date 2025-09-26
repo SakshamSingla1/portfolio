@@ -1,6 +1,13 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { FaGithub, FaLinkedin, FaGlobe, FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
+import {
+  FaGithub,
+  FaLinkedin,
+  FaGlobe,
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
 import { TextGenerateEffect } from "../ui/text-generate-effect";
 import MagicButton from "../ui/magic-button";
 import { type IProfile } from "../../services/useProfileMasterService";
@@ -13,7 +20,7 @@ const useStyles = createUseStyles({
     padding: "4px",
     background: COLORS.primaryGradient,
     borderRadius: "2rem",
-    boxShadow: "0 0 20px rgba(99, 102, 241, 0.5)",
+    boxShadow: `0 0 20px ${COLORS.highlight}`,
   },
   textGradient: {
     background: COLORS.textGradient,
@@ -25,12 +32,15 @@ const useStyles = createUseStyles({
     height: "0.25rem",
     borderRadius: "999px",
     background: COLORS.textGradient,
-    margin: "0.5rem 0",
+    margin: "0.75rem auto",
+    "@media (min-width: 1024px)": {
+      margin: "0.75rem 0",
+    },
   },
   buttonGroup: {
     display: "flex",
-    gap: "1.5rem",
-    marginTop: "2.5rem",
+    gap: "1rem",
+    marginTop: "2rem",
     flexWrap: "wrap",
     justifyContent: "center",
     "@media (min-width: 768px)": {
@@ -44,16 +54,17 @@ const useStyles = createUseStyles({
     transition: "all 0.3s ease",
     padding: "0.5rem 0.75rem",
     borderRadius: "0.5rem",
-    backgroundColor: "rgba(255, 255, 255, 0.05)",
+    backgroundColor: COLORS.darkShade2,
     "&:hover": {
       transform: "translateX(5px)",
-      backgroundColor: "rgba(255, 255, 255, 0.1)",
+      backgroundColor: COLORS.secondary,
     },
   },
   socialIcon: {
     transition: "all 0.3s ease",
     "&:hover": {
       transform: "translateY(-3px)",
+      color: COLORS.highlight,
     },
   },
 });
@@ -66,20 +77,19 @@ const Hero: React.FC<HeroProps> = ({ profile }) => {
   const classes = useStyles();
 
   return (
-    <section className="min-h-screen relative flex flex-col justify-start pt-24 px-4 sm:px-6 pb-12 md:pb-16 lg:pb-20 overflow-hidden">
+    <section className="min-h-screen relative flex flex-col justify-start pt-20 px-4 sm:px-6 lg:px-8 pb-12 overflow-hidden bg-[COLORS.darkest]">
       {/* Spotlights */}
-      <Spotlight className="-top-40 -left-10 md:-left-32 md:-top-20 h-screen" fill="#FFBC5E" />
-      <Spotlight className="h-[80vh] w-[50vw] top-10 left-full" fill="#76D1FF" />
-      <Spotlight className="left-80 top-28 h-[80vh] w-[50vw]" fill="#FFBC5E" />
+      <Spotlight className="-top-40 -left-10 md:-left-32 md:-top-20 h-screen" fill={COLORS.highlight} />
+      <Spotlight className="h-[80vh] w-[50vw] top-10 left-full" fill={COLORS.primary} />
+      <Spotlight className="left-80 top-28 h-[80vh] w-[50vw]" fill={COLORS.gold} />
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-
-          {/* Left Column: Profile Image */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto mt-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          {/* Profile Image */}
           <div className="lg:col-span-4 xl:col-span-3 flex justify-center lg:justify-end">
             {profile.profileImageUrl && (
               <motion.div
-                className="relative w-64 h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 xl:w-96 xl:h-96"
+                className="relative w-52 h-52 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80"
                 initial={{ scale: 0.9, opacity: 0, x: -20 }}
                 animate={{ scale: 1, opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
@@ -88,25 +98,26 @@ const Hero: React.FC<HeroProps> = ({ profile }) => {
                   <img
                     src={profile.profileImageUrl}
                     alt={profile.fullName}
-                    className="w-full h-full rounded-3xl object-cover border-4 border-slate-900"
+                    className="w-full h-full rounded-3xl object-cover border-4"
+                    style={{ borderColor: COLORS.darkest }}
                   />
                 </div>
               </motion.div>
             )}
           </div>
 
-          {/* Right Column: Content */}
-          <div className="lg:col-span-8 xl:col-span-6 flex flex-col justify-center">
+          {/* Content */}
+          <div className="lg:col-span-8 xl:col-span-6 flex flex-col items-center lg:items-start">
             {/* Name */}
             <motion.div
-              className="mb-4 md:mb-6 text-center lg:text-left"
+              className="mb-4 text-center lg:text-left"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.5 }}
             >
               <TextGenerateEffect
                 words={profile.fullName || ""}
-                className={`text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight ${classes.textGradient} mb-2`}
+                className={`text-3xl md:text-5xl font-extrabold leading-tight ${classes.textGradient}`}
               />
               <div className={classes.separator}></div>
             </motion.div>
@@ -114,7 +125,7 @@ const Hero: React.FC<HeroProps> = ({ profile }) => {
             {/* Title */}
             {profile.title && (
               <motion.div
-                className="text-xl md:text-2xl text-gray-300 mb-4 md:mb-6 text-center lg:text-left"
+                className="text-lg md:text-xl text-gray-300 mb-6 text-center lg:text-left"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
@@ -125,7 +136,7 @@ const Hero: React.FC<HeroProps> = ({ profile }) => {
 
             {/* Contact Info */}
             <motion.div
-              className="flex flex-col items-start lg:justify-start gap-3 text-gray-300 mb-8 md:mb-10"
+              className="flex flex-col items-start gap-3 text-gray-300 mb-8 w-full max-w-md"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.5 }}
@@ -133,61 +144,43 @@ const Hero: React.FC<HeroProps> = ({ profile }) => {
               {profile.email && (
                 <a href={`mailto:${profile.email}`} className={classes.contactItem}>
                   <FaEnvelope className="text-blue-400" />
-                  <span className="text-sm md:text-base">{profile.email}</span>
+                  <span>{profile.email}</span>
                 </a>
               )}
               {profile.phone && (
                 <a href={`tel:${profile.phone}`} className={classes.contactItem}>
                   <FaPhone className="text-green-400" />
-                  <span className="text-sm md:text-base">{profile.phone}</span>
+                  <span>{profile.phone}</span>
                 </a>
               )}
               {profile.location && (
                 <div className={classes.contactItem}>
                   <FaMapMarkerAlt className="text-red-400" />
-                  <span className="text-sm md:text-base">{profile.location}</span>
+                  <span>{profile.location}</span>
                 </div>
               )}
             </motion.div>
 
             {/* Social Links */}
             <motion.div
-              className="flex justify-center lg:justify-start gap-5 md:gap-6 mb-8"
+              className="flex justify-center lg:justify-start gap-6 mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.5 }}
             >
               {profile.githubUrl && (
-                <a
-                  href={profile.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`text-2xl text-gray-300 hover:text-white transition-colors ${classes.socialIcon}`}
-                  aria-label="GitHub"
-                >
-                  <FaGithub />
+                <a href={profile.githubUrl} target="_blank" rel="noopener noreferrer" className={classes.socialIcon}>
+                  <FaGithub size={28} />
                 </a>
               )}
               {profile.linkedinUrl && (
-                <a
-                  href={profile.linkedinUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`text-2xl text-gray-300 hover:text-blue-400 transition-colors ${classes.socialIcon}`}
-                  aria-label="LinkedIn"
-                >
-                  <FaLinkedin />
+                <a href={profile.linkedinUrl} target="_blank" rel="noopener noreferrer" className={classes.socialIcon}>
+                  <FaLinkedin size={28} />
                 </a>
               )}
               {profile.websiteUrl && (
-                <a
-                  href={profile.websiteUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`text-2xl text-gray-300 hover:text-purple-400 transition-colors ${classes.socialIcon}`}
-                  aria-label="Personal Website"
-                >
-                  <FaGlobe />
+                <a href={profile.websiteUrl} target="_blank" rel="noopener noreferrer" className={classes.socialIcon}>
+                  <FaGlobe size={28} />
                 </a>
               )}
             </motion.div>
@@ -197,12 +190,15 @@ const Hero: React.FC<HeroProps> = ({ profile }) => {
         {/* About Me */}
         {profile.aboutMe && (
           <motion.div
-            className="max-w-7xl mx-auto text-base md:text-lg leading-relaxed bg-black/30 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-2xl border border-white/10 mt-12"
+            className="max-w-3xl mx-auto text-base md:text-lg leading-relaxed bg-[rgba(0,0,0,0.3)] backdrop-blur-md p-6 md:p-8 rounded-2xl shadow-lg border mt-12"
+            style={{ borderColor: COLORS.grayTransparent }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.5 }}
           >
-            <h3 className="text-xl font-bold text-white mb-4">About Me</h3>
+            <h3 className="text-xl font-bold mb-4" style={{ color: COLORS.light }}>
+              About Me
+            </h3>
             <TextGenerateEffect words={profile.aboutMe} className="text-gray-200" />
 
             <div className={classes.buttonGroup}>
