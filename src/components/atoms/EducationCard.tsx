@@ -5,6 +5,7 @@ import { type IEducation } from '../../services/useProfileMasterService';
 import { htmlToElement, OptionToValue } from '../../utils/helper';
 import { DEGREE_OPTIONS } from '../../utils/constant';
 import { type Variants } from 'framer-motion';
+import { COLORS } from '../../utils/constant';
 
 interface EducationCardProps {
   education: IEducation;
@@ -23,7 +24,7 @@ const cardVariants: Variants = {
   },
   hover: {
     y: -5,
-    boxShadow: '0 10px 15px -5px rgba(0, 0, 0, 0.1)',
+    boxShadow: `0 10px 15px -5px ${COLORS.grayTransparent}`,
     transition: { type: 'spring', stiffness: 300 }
   }
 };
@@ -79,20 +80,25 @@ const EducationCard: React.FC<EducationCardProps> = ({
       initial="hidden"
       animate="visible"
       whileHover="hover"
-      className={`relative border rounded-xl p-6 bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-sm ${
-        isHovered ? 'border-teal-500' : 'border-gray-700'
-      } ${className}`}
+      className={`relative border rounded-xl p-6 backdrop-blur-sm ${className}`}
+      style={{
+        background: COLORS.secondaryGradient,
+        borderColor: isHovered ? COLORS.borderGradient : COLORS.darkShade2,
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="absolute top-1 left-0 right-0 h-2 bg-gray-700 mx-2 overflow-hidden">
+      {/* Progress bar */}
+      <div className="absolute top-1 left-0 right-0 h-2 mx-2 overflow-hidden rounded-full" style={{ background: COLORS.darkShade1 }}>
         <motion.div 
-          className="h-full w-full rounded-full bg-gradient-to-r from-teal-500 to-blue-500"
+          className="h-full rounded-full"
+          style={{ background: COLORS.primaryGradient }}
           initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}
           transition={{ duration: 2, ease: 'easeOut' }}
         />
       </div>
+
       <div className="space-y-6">
         <div className="space-y-4">
           <div className="flex items-start justify-between gap-4">
@@ -101,11 +107,11 @@ const EducationCard: React.FC<EducationCardProps> = ({
                 {getDegreeEmoji(education.degree)}
               </span>
               <div>
-                <h3 className="text-2xl font-bold text-white leading-tight">
+                <h3 className="text-2xl font-bold leading-tight" style={{ color: COLORS.light }}>
                   {education.institution}
                 </h3>
                 {education.degree && (
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm" style={{ color: COLORS.gray }}>
                     {OptionToValue(DEGREE_OPTIONS, education.degree)}
                   </p>
                 )}
@@ -115,7 +121,8 @@ const EducationCard: React.FC<EducationCardProps> = ({
             {hasDescription && (
               <button 
                 onClick={handleToggleDetails}
-                className="p-1.5 rounded-full hover:bg-gray-700/50 transition-colors text-gray-400 hover:text-white"
+                className="p-1.5 rounded-full transition-colors"
+                style={{ color: COLORS.gray, background: isHovered ? COLORS.darkShade1 : 'transparent' }}
                 aria-label={isExpandedState ? 'Show less' : 'Show more'}
               >
                 {isExpandedState ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
@@ -124,29 +131,29 @@ const EducationCard: React.FC<EducationCardProps> = ({
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="flex items-center gap-2 text-white">
-              <BookOpen className="w-4 h-4 flex-shrink-0 text-teal-500" />
+            <div className="flex items-center gap-2" style={{ color: COLORS.light }}>
+              <BookOpen className="w-4 h-4 flex-shrink-0" style={{ color: COLORS.highlight }} />
               <span>{education.fieldOfStudy}</span>
             </div>
             
-            <div className="flex items-center gap-2 text-white">
-              <Calendar className="w-4 h-4 flex-shrink-0 text-blue-400" />
+            <div className="flex items-center gap-2" style={{ color: COLORS.light }}>
+              <Calendar className="w-4 h-4 flex-shrink-0" style={{ color: COLORS.gold }} />
               <span>{formatDateRange(education.startYear, education.endYear)}</span>
             </div>
             
             {education.location && (
-              <div className="flex items-center gap-2 text-white">
-                <MapPin className="w-4 h-4 flex-shrink-0 text-rose-400" />
+              <div className="flex items-center gap-2" style={{ color: COLORS.light }}>
+                <MapPin className="w-4 h-4 flex-shrink-0" style={{ color: COLORS.error }} />
                 <span>{education.location}</span>
               </div>
             )}
             
             {education.grade && (
-              <div className="flex items-center gap-2 text-white">
-                <Star className="w-4 h-4 flex-shrink-0 text-yellow-400" />
+              <div className="flex items-center gap-2" style={{ color: COLORS.light }}>
+                <Star className="w-4 h-4 flex-shrink-0" style={{ color: COLORS.highlight }} />
                 <span>
                   {education.gradeType || 'Grade'}: 
-                  <span className="font-medium text-white ml-1">
+                  <span className="font-medium ml-1" style={{ color: COLORS.light }}>
                     {education.grade.trim().split(' ')[0]} {education.grade.trim().split(' ')[1] === 'Percentage' ? '%' : education.grade.trim().split(' ')[1]}
                   </span>
                 </span>
@@ -155,7 +162,7 @@ const EducationCard: React.FC<EducationCardProps> = ({
           </div>
         </div>
 
-        {/* Expandable description section */}
+        {/* Expandable description */}
         <AnimatePresence>
           {isExpandedState && hasDescription && (
             <motion.div
@@ -166,7 +173,14 @@ const EducationCard: React.FC<EducationCardProps> = ({
               className="overflow-hidden"
             >
               <div className="pt-2">
-                <div className="text-gray-300 text-sm leading-relaxed bg-gray-800/30 p-4 rounded-lg border border-gray-700/50">
+                <div 
+                  className="text-sm leading-relaxed p-4 rounded-lg border" 
+                  style={{
+                    color: COLORS.offWhite,
+                    background: COLORS.darkShade1,
+                    borderColor: COLORS.darkShade2,
+                  }}
+                >
                   <div className="ml-6">
                     {htmlToElement(education.description || '')}
                   </div>
@@ -177,19 +191,20 @@ const EducationCard: React.FC<EducationCardProps> = ({
         </AnimatePresence>
       </div>
       
-      {/* Footer with status and toggle button */}
+      {/* Footer */}
       {hasDescription && (
-        <div className="mt-4 pt-4 border-t border-gray-800 flex items-center justify-between">
-          <span className="text-white text-xs flex items-center gap-2">
-            <span className={`relative flex h-2 w-2`}>
-              <span className={`absolute inline-flex h-full w-full rounded-full ${education.endYear && Number(education.endYear) >= Number(new Date().getFullYear()) ? 'bg-teal-400' : 'bg-blue-400'} opacity-100 animate-ping`}></span>
-              <span className={`relative inline-flex rounded-full h-2 w-2 ${education.endYear && Number(education.endYear) >= Number(new Date().getFullYear()) ? 'bg-teal-500' : 'bg-blue-500'}`}></span>
+        <div className="mt-4 pt-4 flex items-center justify-between" style={{ borderTop: `1px solid ${COLORS.darkShade2}` }}>
+          <span className="text-xs flex items-center gap-2" style={{ color: COLORS.light }}>
+            <span className="relative flex h-2 w-2">
+              <span className={`absolute inline-flex h-full w-full rounded-full opacity-100 animate-ping`} style={{ background: education.endYear && Number(education.endYear) >= new Date().getFullYear() ? COLORS.highlightLight : COLORS.gold }}></span>
+              <span className={`relative inline-flex rounded-full h-2 w-2`} style={{ background: education.endYear && Number(education.endYear) >= new Date().getFullYear() ? COLORS.highlight : COLORS.gold }}></span>
             </span>
             {(education.endYear && Number(education.endYear) >= Number(new Date().getFullYear())) ? 'In Progress' : 'Completed'}
           </span>
           <button 
             onClick={handleToggleDetails}
-            className="text-xs font-medium text-teal-400 hover:text-teal-300 flex items-center gap-1"
+            className="text-xs font-medium flex items-center gap-1 transition-colors"
+            style={{ color: COLORS.highlight }}
           >
             {isExpandedState ? 'Show less' : 'Show details'}
             <ChevronDown 
